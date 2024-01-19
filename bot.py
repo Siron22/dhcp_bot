@@ -3,7 +3,7 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 from log_hadler2 import DhcpLogHandler  # Замените на фактический путь к вашему модулю
 
 # Замените на ваш токен бота
-TOKEN = '6320446687:AAFhS63Ab-5MTrGJU-fMZQJfXhXSjkVlEl0'
+TOKEN = ''
 
 # Создаем экземпляр DhcpLogHandler
 log_handler = DhcpLogHandler()
