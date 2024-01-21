@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
-from log_hadler2 import DhcpLogHandler  # Замените на фактический путь к вашему модулю
+from log_hadler import DhcpLogHandler  # Замените на фактический путь к вашему модулю
 
 # Замените на ваш токен бота
 TOKEN = ''
