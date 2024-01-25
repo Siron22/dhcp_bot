@@ -15,7 +15,7 @@ dhcp_handler = DhcpLogHandler()
 
 # Bot token can be obtained via https://t.me/BotFather
 TOKEN = getenv("BOT_TOKEN")
-CHAT_ID = getenv("CHAT_ID")
+
 
 # All handlers should be attached to the Router (or Dispatcher)
 dp = Dispatcher()
@@ -32,10 +32,13 @@ async def command_start_handler(message: Message) -> None:
 
 @dp.message(Command('devices'))
 async def show_devices(message: types.Message):
-    devices_info = "\n".join(
-        [f"{device['date_time']} MAC: {device['mac']}, IP: {device['ip']}" for device in
-         dhcp_handler.get_approved_devices])
-    response = f"Approved devices:\n{devices_info}"
+    if dhcp_handler.get_approved_devices:
+        devices_info = "\n".join(
+            [f"{device['date_time']} MAC: {device['mac']}, IP: {device['ip']}" for device in
+             dhcp_handler.get_approved_devices])
+        response = f"Approved devices:\n{devices_info}"
+    else:
+        response = "No approved devices"
     await message.answer(response)
 
 
@@ -56,15 +59,18 @@ async def update_connections(message: types.Message):
 
 @dp.message(Command('log'))
 async def show_devices(message: types.Message):
-    first = dhcp_handler.get_ack_requests[0]["date_time"]
-    last = dhcp_handler.get_ack_requests[-1]["date_time"]
-    quantity = len(dhcp_handler.get_ack_requests)
-    response = f"{quantity} DHCPACK responses from {first} to {last}"
+    if dhcp_handler.get_ack_requests:
+        first = dhcp_handler.get_ack_requests[0]["date_time"]
+        last = dhcp_handler.get_ack_requests[-1]["date_time"]
+        quantity = len(dhcp_handler.get_ack_requests)
+        response = f"{quantity} DHCPACK responses from {first} to {last}"
+    else:
+        response = "No connected devices"
     await message.answer(response)
 
 
 async def main() -> None:
     # Initialize Bot instance with a default parse mode which will be passed to all API calls
-    bot = Bot(TOKEN, parse_mode=ParseMode.MARKDOWN)
+    bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
     # And the run events dispatching
     await dp.start_polling(bot)
