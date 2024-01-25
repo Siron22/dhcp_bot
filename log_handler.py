@@ -1,10 +1,9 @@
 import re
-import time
 
 
 class DhcpLogHandler:
 
-    def __init__(self, path='/var/log/syslog'):
+    def __init__(self, path='/app/log/syslog'):
         self.path = path
         self.devices = list()
         self.new = list()
